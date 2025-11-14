@@ -31,22 +31,29 @@ cd ~/dotfiles
 ## What the scripts do
 
 1. **Install required packages**
-   - Neovim
+   - Build dependencies (cmake, ninja, gettext, etc.)
    - Tmux
    - Git
    - Ripgrep, fd-find (for telescope.nvim)
    - Node.js and Python (for Neovim plugins)
 
-2. **Backup existing configurations**
+2. **Build Neovim from source**
+   - Clones the official Neovim repository
+   - Builds and installs the latest stable version
+   - Ensures you always have the most up-to-date Neovim
+   - Stored in `~/.local/src/neovim` for easy updates
+
+3. **Backup existing configurations**
    - Creates a backup directory with timestamp
    - Moves existing configs to backup
 
-3. **Create symlinks**
+4. **Create symlinks**
    - Links configuration files from dotfiles to home directory
    - Allows easy updates via git
 
-4. **Install Neovim plugins**
-   - Automatically installs plugins using lazy.nvim
+5. **Install Neovim plugins**
+   - Automatically installs lazy.nvim plugin manager
+   - Installs all plugins defined in the configuration
 
 ## Manual Installation
 
@@ -77,7 +84,7 @@ nvim
 
 ## Updating
 
-To update your configurations:
+### Update dotfiles configurations
 
 ```bash
 cd ~/dotfiles
@@ -85,6 +92,26 @@ git pull
 ```
 
 Since we use symlinks, changes are automatically reflected.
+
+### Update Neovim to the latest version
+
+```bash
+cd ~/.local/src/neovim
+git fetch --all
+git checkout stable
+git pull
+make distclean
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install
+nvim --version  # Verify new version
+```
+
+Or simply re-run the install script (it will ask if you want to rebuild):
+
+```bash
+cd ~/dotfiles
+./install-linux.sh  # or ./install-macos.sh
+```
 
 ## Customization
 

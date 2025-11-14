@@ -42,9 +42,8 @@ install_packages() {
 
     brew update
 
-    # Install packages
+    # Install packages (neovim will be built from source)
     packages=(
-        neovim
         tmux
         git
         curl
@@ -53,6 +52,9 @@ install_packages() {
         fd
         node
         python3
+        ninja
+        cmake
+        gettext
     )
 
     for package in "${packages[@]}"; do
@@ -63,6 +65,60 @@ install_packages() {
             brew install "$package"
         fi
     done
+}
+
+# Build Neovim from source
+build_neovim() {
+    echo -e "${YELLOW}Building Neovim from source...${NC}"
+
+    # Check if nvim is already installed and up to date
+    if command -v nvim &> /dev/null; then
+        CURRENT_VERSION=$(nvim --version | head -n1 | awk '{print $2}')
+        echo -e "${GREEN}Neovim $CURRENT_VERSION is already installed${NC}"
+
+        read -p "Do you want to rebuild/update Neovim? (y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Skipping Neovim build."
+            return
+        fi
+    fi
+
+    NVIM_BUILD_DIR="$HOME/.local/src/neovim"
+
+    # Clone or update Neovim repository
+    if [ -d "$NVIM_BUILD_DIR" ]; then
+        echo -e "${YELLOW}Updating Neovim repository...${NC}"
+        cd "$NVIM_BUILD_DIR"
+        git fetch --all
+        git checkout stable
+        git pull
+    else
+        echo -e "${YELLOW}Cloning Neovim repository...${NC}"
+        mkdir -p "$HOME/.local/src"
+        git clone https://github.com/neovim/neovim.git "$NVIM_BUILD_DIR"
+        cd "$NVIM_BUILD_DIR"
+        git checkout stable
+    fi
+
+    # Clean previous build
+    make distclean 2>/dev/null || true
+
+    # Build and install
+    echo -e "${YELLOW}Building Neovim (this may take a few minutes)...${NC}"
+    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    sudo make install
+
+    # Verify installation
+    if command -v nvim &> /dev/null; then
+        NVIM_VERSION=$(nvim --version | head -n1)
+        echo -e "${GREEN}✓ Neovim installed successfully: $NVIM_VERSION${NC}"
+    else
+        echo -e "${RED}✗ Neovim installation failed${NC}"
+        exit 1
+    fi
+
+    cd - > /dev/null
 }
 
 # Backup existing configs
@@ -167,6 +223,7 @@ main() {
 
     install_homebrew
     install_packages
+    build_neovim
     backup_configs
     create_symlinks
     install_nvim_plugins
