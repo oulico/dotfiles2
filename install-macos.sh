@@ -107,9 +107,8 @@ install_nvim_plugins() {
 
     # Check if lazy.nvim exists in the config
     if [ -f "$HOME/.config/nvim/init.lua" ]; then
-        echo -e "${GREEN}Running Neovim to install plugins...${NC}"
-        nvim --headless "+Lazy! sync" +qa
-        echo -e "${GREEN}✓ Neovim plugins installed${NC}"
+        echo -e "${GREEN}Neovim will install plugins on first run.${NC}"
+        echo -e "${YELLOW}Please open nvim and wait for plugins to install, then restart nvim.${NC}"
     else
         echo -e "${YELLOW}⚠ init.lua not found, skipping plugin installation${NC}"
     fi

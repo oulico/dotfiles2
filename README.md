@@ -107,13 +107,24 @@ The Neovim configuration uses [lazy.nvim](https://github.com/folke/lazy.nvim) as
 
 ## Troubleshooting
 
-### Neovim plugins not loading
+### Neovim plugins not loading or errors on first run
 
+If you see errors like `module 'harpoon.mark' not found` or `attempt to index field 'keymap' (a nil value)`, the plugins haven't been installed yet.
+
+**Solution:**
+1. Open Neovim: `nvim`
+2. Wait for lazy.nvim to automatically install plugins (you'll see a progress window)
+3. After installation completes, quit nvim (`:q`)
+4. Open nvim again - everything should work now
+
+**Alternative manual method:**
 ```bash
-nvim --headless "+Lazy! sync" +qa
+nvim +'Lazy sync' +qa
+# Then open nvim normally
+nvim
 ```
 
-### Permission denied
+### Permission denied when running install scripts
 
 ```bash
 chmod +x ~/dotfiles/install-*.sh
@@ -123,7 +134,18 @@ chmod +x ~/dotfiles/install-*.sh
 
 ```bash
 tmux source ~/.tmux.conf
+# Or restart tmux
+tmux kill-server && tmux
 ```
+
+### Neovim version too old
+
+Some features require Neovim 0.8+. Check your version:
+```bash
+nvim --version
+```
+
+If it's too old, install the latest version from the official repository.
 
 ## License
 
