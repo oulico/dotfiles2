@@ -105,10 +105,22 @@ create_symlinks() {
 install_nvim_plugins() {
     echo -e "${YELLOW}Installing Neovim plugins...${NC}"
 
+    # Install lazy.nvim plugin manager
+    LAZY_PATH="$HOME/.local/share/nvim/lazy/lazy.nvim"
+    if [ ! -d "$LAZY_PATH" ]; then
+        echo -e "${YELLOW}Installing lazy.nvim plugin manager...${NC}"
+        git clone --filter=blob:none https://github.com/folke/lazy.nvim.git "$LAZY_PATH"
+        echo -e "${GREEN}✓ lazy.nvim installed${NC}"
+    else
+        echo -e "${GREEN}✓ lazy.nvim already installed${NC}"
+    fi
+
     # Check if lazy.nvim exists in the config
     if [ -f "$HOME/.config/nvim/init.lua" ]; then
-        echo -e "${GREEN}Neovim will install plugins on first run.${NC}"
-        echo -e "${YELLOW}Please open nvim and wait for plugins to install, then restart nvim.${NC}"
+        echo -e "${YELLOW}Installing plugins (this may take a minute)...${NC}"
+        nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+        echo -e "${GREEN}✓ Plugins installed${NC}"
+        echo -e "${YELLOW}Note: Open nvim and restart it once if you see any errors on first run${NC}"
     else
         echo -e "${YELLOW}⚠ init.lua not found, skipping plugin installation${NC}"
     fi
