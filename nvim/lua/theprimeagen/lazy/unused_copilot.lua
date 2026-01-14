@@ -1,4 +1,3 @@
---[[
 return {
 	"copilotlsp-nvim/copilot-lsp",
 	init = function()
@@ -9,4 +8,3 @@ return {
 		end)
 	end,
 }
---]]

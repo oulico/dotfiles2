@@ -29,3 +29,6 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 250  -- 커서 올리고 250ms 후 에러 표시
 
 vim.opt.colorcolumn = "80"
+
+-- 파일 시스템 변경사항 자동 감지
+vim.opt.autoread = true  -- 파일이 외부에서 변경되면 자동으로 다시 읽기

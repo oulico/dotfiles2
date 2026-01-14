@@ -23,6 +23,7 @@ return {
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
+        "antosha417/nvim-lsp-file-operations",
     },
 
     config = function()
@@ -38,14 +39,25 @@ return {
             vim.lsp.protocol.make_client_capabilities(),
             cmp_lsp.default_capabilities())
 
+        -- 파일 이동 시 임포트 자동 업데이트를 위한 fileOperations 지원
+        capabilities.workspace = capabilities.workspace or {}
+        capabilities.workspace.fileOperations = {
+            willRename = true,
+            didRename = true,
+        }
+
         require("fidget").setup({})
         require("mason").setup()
+
+        -- LSP 파일 작업 지원 활성화 (oil.nvim과 연동)
+        require("lsp-file-operations").setup()
+
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
                 "gopls",
-                "tsserver",
+                "ts_ls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -129,5 +141,9 @@ return {
                 prefix = "",
             },
         })
+
+        -- LSP 디버깅 키맵
+        vim.keymap.set('n', '<leader>li', '<cmd>LspInfo<cr>', { desc = 'LSP Info' })
+        vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<cr>', { desc = 'LSP Restart' })
     end
 }

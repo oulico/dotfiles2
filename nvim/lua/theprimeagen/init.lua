@@ -57,6 +57,16 @@ autocmd('BufEnter', {
     end
 })
 
+-- 파일 시스템 변경사항 자동 감지 (oil.nvim 파일 이동 후 버퍼 동기화)
+autocmd({'FocusGained', 'BufEnter', 'CursorHold'}, {
+    group = ThePrimeagenGroup,
+    callback = function()
+        if vim.fn.mode() ~= 'c' then
+            vim.cmd('checktime')
+        end
+    end,
+})
+
 
 autocmd('LspAttach', {
     group = ThePrimeagenGroup,

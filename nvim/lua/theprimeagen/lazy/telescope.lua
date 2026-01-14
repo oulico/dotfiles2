@@ -1,7 +1,7 @@
 return {
     "nvim-telescope/telescope.nvim",
 
-    tag = "0.1.5",
+    branch = "0.1.x",
 
     dependencies = {
         "nvim-lua/plenary.nvim"
@@ -31,6 +31,12 @@ return {
             builtin.diagnostics({ bufnr = 0 })
         end, { desc = "Show diagnostics for current buffer" })
         vim.keymap.set('n', '<leader>E', builtin.diagnostics, { desc = "Show diagnostics for all buffers" })
+
+        -- 버퍼 새로고침: 파일 시스템 변경사항을 Neovim에 반영
+        vim.keymap.set('n', '<leader>rf', function()
+            vim.cmd('checktime')  -- 모든 버퍼의 파일 변경사항 확인
+            print("Buffers refreshed")
+        end, { desc = "Refresh all buffers to detect file system changes" })
     end
 }
 
