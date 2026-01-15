@@ -131,6 +131,7 @@ backup_configs() {
     [ -d "$HOME/.config/nvim" ] && mv "$HOME/.config/nvim" "$BACKUP_DIR/"
     [ -f "$HOME/.tmux.conf" ] && mv "$HOME/.tmux.conf" "$BACKUP_DIR/"
     [ -f "$HOME/.vimrc" ] && mv "$HOME/.vimrc" "$BACKUP_DIR/"
+    [ -f "$HOME/.config/skhd/skhdrc" ] && mv "$HOME/.config/skhd/skhdrc" "$BACKUP_DIR/"
 
     echo -e "${GREEN}Backup created at: $BACKUP_DIR${NC}"
 }
@@ -155,6 +156,11 @@ create_symlinks() {
     # Vimrc
     ln -sf "$DOTFILES_DIR/.vimrc" "$HOME/.vimrc"
     echo -e "${GREEN}✓ Linked vimrc${NC}"
+
+    # skhd
+    mkdir -p "$HOME/.config/skhd"
+    ln -sf "$DOTFILES_DIR/config/skhd/skhdrc" "$HOME/.config/skhd/skhdrc"
+    echo -e "${GREEN}✓ Linked skhd config${NC}"
 }
 
 # Install Neovim plugins

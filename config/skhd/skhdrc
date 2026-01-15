@@ -1,0 +1,29 @@
+# change window focus within space
+alt + shift - j : yabai -m window --focus next || yabai -m window --focus first
+alt + shift - k : yabai -m window --focus prev || yabai -m window --focus last
+
+#change focus between external displays (cycling through all displays)
+alt + shift - h: ~/.config/yabai/cycle_display.sh prev
+alt + shift - l: ~/.config/yabai/cycle_display.sh next
+
+# rotate layout clockwise
+# alt + shift - down : yabai -m space --rotate 270
+
+# rotate layout counter-clockwise
+# alt + shift - up : yabai -m space --rotate 90
+
+# swap window position within space with the previous/next window
+alt + shift - up : yabai -m window --swap prev || yabai -m window --swap first
+alt + shift - down : yabai -m window --swap next || yabai -m window --swap last
+
+# toggle layout (bsp, stack, float)
+alt + shift - space : ~/.config/yabai/toggle_layout.sh
+
+# move window accross displays (cycling)
+alt + shift - left : ~/.config/yabai/move_window_display.sh prev
+alt + shift - right : ~/.config/yabai/move_window_display.sh next
+
+# stop/start/restart yabai
+ctrl + alt - q : yabai --stop-service
+ctrl + alt - s : yabai --start-service
+ctrl + alt - r : yabai --restart-service
