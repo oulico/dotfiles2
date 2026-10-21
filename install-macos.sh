@@ -131,6 +131,7 @@ backup_configs() {
     [ -d "$HOME/.config/nvim" ] && mv "$HOME/.config/nvim" "$BACKUP_DIR/"
     [ -f "$HOME/.tmux.conf" ] && mv "$HOME/.tmux.conf" "$BACKUP_DIR/"
     [ -f "$HOME/.vimrc" ] && mv "$HOME/.vimrc" "$BACKUP_DIR/"
+    [ -f "$HOME/.zshenv" ] && mv "$HOME/.zshenv" "$BACKUP_DIR/"
     [ -f "$HOME/.config/skhd/skhdrc" ] && mv "$HOME/.config/skhd/skhdrc" "$BACKUP_DIR/"
 
     echo -e "${GREEN}Backup created at: $BACKUP_DIR${NC}"
@@ -151,11 +152,18 @@ create_symlinks() {
 
     # Tmux
     ln -sf "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
+    mkdir -p "$HOME/.tmux"
+    ln -sf "$DOTFILES_DIR/tmux/log-created.sh" "$HOME/.tmux/log-created.sh"
+    ln -sf "$DOTFILES_DIR/tmux/prune.sh" "$HOME/.tmux/prune.sh"
     echo -e "${GREEN}✓ Linked tmux config${NC}"
 
     # Vimrc
     ln -sf "$DOTFILES_DIR/.vimrc" "$HOME/.vimrc"
     echo -e "${GREEN}✓ Linked vimrc${NC}"
+
+    # zshenv (fd 한도)
+    ln -sf "$DOTFILES_DIR/.zshenv" "$HOME/.zshenv"
+    echo -e "${GREEN}✓ Linked zshenv${NC}"
 
     # skhd
     mkdir -p "$HOME/.config/skhd"

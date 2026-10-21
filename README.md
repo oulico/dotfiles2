@@ -6,6 +6,8 @@ Personal configuration files for Neovim, Tmux, and Vim.
 
 - **nvim/** - Neovim configuration
 - **.tmux.conf** - Tmux configuration
+- **tmux/** - Tmux hook scripts (session creation log, prune), linked into `~/.tmux/`
+- **.zshenv** - Raises the open-file soft limit for every zsh, including `ssh host <cmd>`
 - **.vimrc** - Vim configuration
 - **install-linux.sh** - Installation script for Linux
 - **install-macos.sh** - Installation script for macOS
